@@ -109,9 +109,7 @@
         <!-- categories -->
         <div class="flex flex-wrap gap-3 mb-10">
 
-          <span class="px-4 py-2 rounded-xl bg-white/5 text-sm border border-white/5">
-            Home
-          </span>
+          
 
           <span class="px-4 py-2 rounded-xl bg-white/5 text-sm border border-white/5">
             Fansubs
@@ -191,7 +189,9 @@
         <!-- buttons -->
         <div class="flex gap-4 mb-10">
 
-          <button
+         
+
+          <button id="closeBtn"
             class="bg-[#5864be]
                    hover:bg-[#6975d1]
                    transition-all duration-300
@@ -199,20 +199,7 @@
                    rounded-2xl
                    font-semibold">
 
-            Entrar
-
-          </button>
-
-          <button id="closeBtn"
-            class="border border-white/10
-                   hover:border-[#5864be]
-                   hover:bg-[#5864be]/10
-                   transition-all duration-300
-                   px-7 py-4
-                   rounded-2xl
-                   font-semibold">
-
-            Fechar
+             Entrar no site
 
           </button>
 
@@ -376,6 +363,23 @@
 
     }, 1000);
 
+    
+    document.querySelectorAll('welcome-screen').forEach(btn => {
+
+      btn.addEventListener('click', () => {
+
+        const screen = document.getElementById('welcomeScreen');
+
+        screen.classList.add('fade-out');
+
+        setTimeout(() => {
+          // screen.style.display = 'none';
+          location.href='index-app.html'
+        }, 500);
+
+      });
+
+    });
     // botão fechar
     document.getElementById('closeBtn').addEventListener('click', () => {
 
@@ -385,6 +389,7 @@
 
       setTimeout(() => {
         screen.style.display = 'none';
+        location.href='index-app.html'
       }, 500);
 
     });
