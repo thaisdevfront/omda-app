@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>OMDA Client</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+  transition:.25s;
+}
+
+:root{
+
+  --primary:#5864be;
+
+  /* DARK */
+
+  --bg:#333333;
+  --sidebar:#2b2b2b;
+
+  --card:#3b3b3b;
+  --card2:#444444;
+
+  --text:#ffffff;
+  --muted:#c8c8c8;
+
+  --input:#404040;
+
+  --border:rgba(255,255,255,.05);
+
+}
+
+/* LIGHT */
+
+body.light{
+
+  --bg:#ececec;
+  --sidebar:#ffffff;
+
+  --card:#ffffff;
+  --card2:#f5f5f5;
+
+  --text:#222222;
+  --muted:#666666;
+
+  --input:#ffffff;
+
+  --border:rgba(0,0,0,.05);
+
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding:30px;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:24px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  background:linear-gradient(145deg,var(--sidebar),var(--card));
+  border-radius:28px;
+  padding:24px;
+  height:calc(100vh - 60px);
+  position:sticky;
+  top:30px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border:1px solid var(--border);
+}
+
+.logo{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:40px;
+}
+
+.logo span{
+  color:var(--primary);
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.menu button{
+  background:transparent;
+  border:none;
+  color:var(--text);
+  padding:16px;
+  border-radius:16px;
+  text-align:left;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:500;
+}
+
+.menu button:hover,
+.menu .active{
+  background:var(--primary);
+  color:#fff;
+}
+
+.client-card{
+  background:var(--card);
+  padding:20px;
+  border-radius:20px;
+}
+
+.client-card h3{
+  margin-bottom:10px;
+}
+
+.client-card p{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:18px;
+}
+
+.client-card button{
+  width:100%;
+  border:none;
+  padding:14px;
+  border-radius:14px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* CONTENT */
+
+.content{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+
+/* TOPBAR */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.topbar-left h1{
+  font-size:36px;
+  margin-bottom:6px;
+}
+
+.topbar-left p{
+  color:var(--muted);
+}
+
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.search{
+  width:320px;
+  background:var(--input);
+  border:none;
+  padding:16px;
+  border-radius:16px;
+  color:var(--text);
+  outline:none;
+}
+
+.theme-toggle{
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:16px;
+  background:var(--primary);
+  color:#fff;
+  cursor:pointer;
+  font-size:20px;
+}
+
+.profile{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:var(--primary);
+}
+
+/* STATS */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.card{
+  background:linear-gradient(145deg,var(--card),var(--card2));
+  border-radius:28px;
+  padding:28px;
+  border:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+
+.card::before{
+  content:'';
+  position:absolute;
+  width:160px;
+  height:160px;
+  background:rgba(88,100,190,.18);
+  top:-50px;
+  right:-50px;
+  border-radius:50%;
+  filter:blur(30px);
+}
+
+.card h4{
+  margin-bottom:14px;
+}
+
+.card h2{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.card p{
+  color:var(--muted);
+}
+
+/* DOWNLOADS */
+
+.downloads{
+  background:linear-gradient(145deg,var(--card),var(--card2));
+  border-radius:28px;
+  padding:28px;
+  border:1px solid var(--border);
+}
+
+.downloads-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.downloads-header h2{
+  font-size:24px;
+}
+
+.table{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.row{
+  background:var(--sidebar);
+  border-radius:18px;
+  padding:18px 20px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  align-items:center;
+  gap:20px;
+}
+
+.file{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.file-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--primary);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  font-weight:700;
+}
+
+.progress{
+  width:100%;
+  height:10px;
+  border-radius:999px;
+  background:#555;
+  overflow:hidden;
+}
+
+.progress div{
+  height:100%;
+  background:var(--primary);
+  border-radius:999px;
+}
+
+.status{
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(88,100,190,.18);
+  color:var(--primary);
+  width:max-content;
+  font-size:13px;
+  font-weight:700;
+}
+
+/* PROFILE */
+
+.bottom{
+  display:grid;
+  grid-template-columns:1.3fr .7fr;
+  gap:20px;
+}
+
+.profile-card,
+.activity{
+  background:linear-gradient(145deg,var(--card),var(--card2));
+  border-radius:28px;
+  padding:28px;
+  border:1px solid var(--border);
+}
+
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:var(--primary);
+  margin-bottom:20px;
+}
+
+.profile-card h2{
+  margin-bottom:8px;
+}
+
+.profile-card p{
+  color:var(--muted);
+  margin-bottom:24px;
+}
+
+.profile-info{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.info{
+  background:var(--sidebar);
+  padding:16px;
+  border-radius:16px;
+}
+
+.info small{
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px;
+}
+
+/* ACTIVITY */
+
+.activity h3{
+  margin-bottom:24px;
+}
+
+.activity-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.activity-item{
+  background:var(--sidebar);
+  padding:18px;
+  border-radius:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.badge{
+  background:var(--primary);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1200px){
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    height:auto;
+    position:relative;
+  }
+
+  .cards,
+  .bottom{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:900px){
+
+  .row{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+  }
+
+  .search{
+    width:100%;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div>
+
+      <div class="logo flex items-center justify-center"> 
+        <img src="assets/images/ft-logo.png" alt="OMDA" >
+      </div>
+
+      <div class="menu">
+        <button class="active">Painel</button>
+        <button>.Torrents</button> 
+        
+      </div>
+      
+    </div>
+
+    <div class="client-card">
+      <h3>Uploader</h3>
+      <p>Acesso rápido aos seus torrents.</p>
+      <button>Gerenciar Conta</button>
+    </div>
+
+  </aside>
+
+  <!-- CONTENT -->
+
+  <main class="content">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+      <div class="topbar-left">
+        <h1>Detalhes do Torrent</h1>
+        <p>OMDA</p>
+      </div>
+
+     <div class="flex items-center gap-4">
+
+  <!-- Pesquisa -->
+  <input
+    type="text"
+    placeholder="Buscar Torrents..."
+    class="w-80 px-4 py-3 rounded-2xl bg-[var(--input)] border border-[var(--border)] outline-none"
+  >
+
+  <!-- Tema -->
+  <button class="hidden" onclick="toggleTheme()"
+    class="w-12 h-12 rounded-2xl bg-[#5864be] text-white flex items-center justify-center">
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
+
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M21 12.79A9 9 0 1111.21 3c0 .34.02.67.05 1A7 7 0 0021 12.79z"/>
+
+    </svg>
+
+  </button>
+
+  <!-- Notificações -->
+  <button
+    class="relative w-12 h-12 rounded-2xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center">
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+      fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+      <path stroke-linecap="round" stroke-linejoin="round"
+        stroke-width="2"
+        d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0h6z"/>
+
+    </svg>
+
+    <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+
+  </button>
+  
+  <button class="flex items-center gap-3 px-3 py-2 rounded-2xl bg-[var(--card)]">
+
+  <div class="w-10 h-10 rounded-full bg-[#5864be] text-white flex items-center justify-center">
+    <img
+      src="assets/capa/avatar.png"
+      alt="Uploader"
+      class="w-10 h-10 rounded-full object-cover">
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-5 h-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2">
+
+      <path d="M20 21a8 8 0 0 0-16 0"></path>
+      <circle cx="12" cy="8" r="5"></circle>
+
+    </svg>
+
+  </div>
+
+  <div>
+    <div class="font-medium">CharX</div>
+    <div class="text-xs opacity-60">Uploader</div>
+  </div>
+
+</button>
+  <!-- Usuário -->
+  <div class="relative hidden">
+
+    <button
+      onclick="toggleUserMenu()"
+      class="flex items-center gap-3 bg-[var(--card)] border border-[var(--border)] px-3 py-2 rounded-2xl">
+
+      <img
+        src="assets/images/avatar.jpg"
+        alt="Usuário"
+        class="w-10 h-10 rounded-full object-cover">
+
+      <div class="text-left">
+        <div class="font-semibold text-sm">Vinicius</div>
+        <div class="text-xs opacity-60">Administrador</div>
+      </div>
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+        class="w-4 h-4 opacity-60"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
+
+        <path stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"/>
+
+      </svg>
+
+    </button>
+
+    <!-- Dropdown -->
+
+    <div id="userMenu"
+      class="hidden absolute right-0 top-16 w-56 bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xl z-50">
+
+      <a href="#"
+        class="block px-4 py-3 hover:bg-[#5864be] hover:text-white">
+        Meu Perfil
+      </a>
+
+      <a href="#"
+        class="block px-4 py-3 hover:bg-[#5864be] hover:text-white">
+        Configurações
+      </a>
+
+      <a href="#"
+        class="block px-4 py-3 hover:bg-[#5864be] hover:text-white">
+        Alterar Senha
+      </a>
+
+      <hr class="opacity-10">
+
+      <a href="#"
+        class="block px-4 py-3 text-red-500 hover:bg-red-500 hover:text-white">
+        Sair
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="cards hidden">
+
+      <div class="card">
+        <h4>Downloads Ativos</h4>
+        <h2>12</h2>
+        <p>Arquivos em andamento</p>
+      </div>
+
+      <div class="card">
+        <h4>Concluídos</h4>
+        <h2>184</h2>
+        <p>Total finalizado</p>
+      </div>
+
+      <div class="card">
+        <h4>Velocidade</h4>
+        <h2>82 MB/s</h2>
+        <p>Download atual</p>
+      </div>
+
+    </div>
+
+    <!-- DOWNLOADS -->
+
+    <div class="downloads hidden" >
+
+      <div class="downloads-header">
+        <h2>Meus Downloads</h2>
+      </div>
+
+      <div class="table">
+
+        <div class="row">
+
+          <div class="file">
+            <div class="file-icon">ISO</div>
+            <div>
+              <strong>ubuntu-24.04.iso</strong>
+              <p>4.2 GB</p>
+            </div>
+          </div>
+
+          <div>
+            <small>Progresso</small>
+
+            <div class="progress">
+              <div style="width:78%"></div>
+            </div>
+          </div>
+
+          <div>
+            <small>Velocidade</small>
+            <p>52 MB/s</p>
+          </div>
+
+          <div class="status">
+            Downloading
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="file">
+            <div class="file-icon">ZIP</div>
+            <div>
+              <strong>design-assets.zip</strong>
+              <p>2.1 GB</p>
+            </div>
+          </div>
+
+          <div>
+            <small>Progresso</small>
+
+            <div class="progress">
+              <div style="width:100%"></div>
+            </div>
+          </div>
+
+          <div>
+            <small>Velocidade</small>
+            <p>Finalizado</p>
+          </div>
+
+          <div class="status">
+            Completed
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="file">
+            <div class="file-icon">RAR</div>
+            <div>
+              <strong>backup-server.rar</strong>
+              <p>8.7 GB</p>
+            </div>
+          </div>
+
+          <div>
+            <small>Progresso</small>
+
+            <div class="progress">
+              <div style="width:34%"></div>
+            </div>
+          </div>
+
+          <div>
+            <small>Velocidade</small>
+            <p>21 MB/s</p>
+          </div>
+
+          <div class="status">
+            Downloading
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PROFILE -->
+
+    <div class="bottom">
+
+      <!-- ACTIVITY -->
+        <div class="activity">
+
+  <!-- CAPA -->
+  <img
+    src="assets/capa/kidou-senshi.png"
+    alt="Kidou Senshi Gundam"
+    class="w-full h-80 object-cover rounded-2xl mb-5">
+
+  <!-- TITULO -->
+  <h2 class="text-2xl font-bold mb-2">
+    Kidou Senshi Gundam
+  </h2>
+
+  <!-- BADGES -->
+  <div class="flex flex-wrap gap-2 mb-4">
+
+    <span class="badge">Anime</span>
+    <span class="badge">1080p</span>
+    <span class="badge">24.24 GB</span>
+    <span class="badge">14 Seeds</span>
+
+  </div>
+
+  <!-- SINOPSE -->
+  <p class="text-sm opacity-75 leading-relaxed mb-6">
+    Em meio ao conflito entre a Federação Terrestre e o Principado de Zeon,
+    Amuro Ray encontra o lendário RX-78-2 Gundam e se torna peça fundamental
+    em uma guerra que mudará o destino da humanidade.
+  </p>
+
+  <!-- INFO GRID -->
+
+  <div class="grid grid-cols-2 gap-4">
+
+    <div>
+      <span class="opacity-50 text-xs">Categoria</span>
+      <p>Anime</p>
+    </div>
+
+    <div>
+      <span class="opacity-50 text-xs">Tamanho</span>
+      <p>24.24 GB</p>
+    </div>
+
+    <div>
+      <span class="opacity-50 text-xs">Seeds</span>
+      <p>14</p>
+    </div>
+
+    <div>
+      <span class="opacity-50 text-xs">Leechers</span>
+      <p>0</p>
+    </div>
+
+    <div>
+      <span class="opacity-50 text-xs">Downloads</span>
+      <p>51</p>
+    </div>
+
+    <div>
+      <span class="opacity-50 text-xs">Grupo</span>
+      <p>Anime No Sekai</p>
+    </div>
+
+  </div>
+
+  
+<!-- COMENTÁRIOS -->
+
+<div class="mt-8">
+
+  <div class="flex items-center justify-between mb-6">
+
+    <h3 class="text-xl font-bold">
+      Comentários
+    </h3>
+
+    <span class="text-sm text-zinc-500">
+      24 comentários
+    </span>
+
+  </div>
+
+  <div class="space-y-4">
+
+    <!-- Comentário -->
+
+    <div class="bg-zinc-800/50 rounded-2xl p-4">
+
+      <div class="flex items-center gap-3 mb-3">
+
+        <div class="w-10 h-10 rounded-full bg-[#5864be] flex items-center justify-center font-semibold">
+          V
+        </div>
+
+        <div>
+          <h4 class="font-medium">CharX</h4>
+          <p class="text-xs text-zinc-500">
+            há 2 horas
+          </p>
+        </div>
+
+      </div>
+
+      <p class="text-zinc-300 leading-relaxed">
+        Excelente encode. Qualidade muito boa e legendas sincronizadas.
+      </p>
+
+    </div>
+
+    <!-- Comentário -->
+
+    <div class="bg-zinc-800/50 rounded-2xl p-4">
+
+      <div class="flex items-center gap-3 mb-3">
+
+        <div class="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center font-semibold">
+          A
+        </div>
+
+        <div>
+          <h4 class="font-medium">AnimeFanBR</h4>
+          <p class="text-xs text-zinc-500">
+            há 1 dia
+          </p>
+        </div>
+
+      </div>
+
+      <p class="text-zinc-300 leading-relaxed">
+        Obrigado pelo upload. Seeds excelentes e download muito rápido.
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- NOVO COMENTÁRIO -->
+
+  <div class="mt-6">
+
+    <textarea
+      placeholder="Escreva um comentário..."
+      class="w-full bg-zinc-800 rounded-2xl p-4 min-h-28 resize-none border border-zinc-700 focus:outline-none focus:border-[#5864be]">
+    </textarea>
+
+    <button
+      class="mt-4 bg-[#5864be] hover:bg-[#4955a8] px-6 py-3 rounded-xl font-medium transition">
+
+      Publicar Comentário
+
+    </button>
+
+  </div>
+
+</div>
+</div>
+      <!-- PERFIL -->
+<div class="profile-card bg-[var(--card)] border border-[var(--border)] rounded-3xl p-6">
+
+  <h3 class="text-xl font-bold mb-6">
+    Status do Torrent
+  </h3>
+
+  <div class=" rounded-3xl">
+
+  <div class="flex gap-2 mb-4">
+
+    <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm">
+      14 Seeds
+    </span>
+
+    <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">
+      Anime
+    </span>
+
+  </div>
+
+  <h2 class="text-2xl font-bold mb-2">
+    Kidou Senshi Gundam
+  </h2>
+
+  <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+    Em meio ao conflito entre a Federação Terrestre e o Principado de Zeon,
+    Amuro Ray encontra o lendário RX-78-2 Gundam.
+  </p>
+<!-- DOWNLOAD -->
+
+  
+  <button
+  class="w-full py-4 rounded-2xl font-semibold text-white
+         bg-gradient-to-r from-[#5864be] via-[#6d5fe8] to-[#8b5cf6]
+         hover:shadow-[0_10px_30px_rgba(109,95,232,.35)]
+         hover:-translate-y-0.5
+         transition-all duration-300">
+
+   Baixar Torrent
+
+</button>
+  <div class="border-t border-zinc-800 pt-6">
+
+    <h4 class="font-semibold mb-4">
+      Detalhes do Torrent
+    </h4>
+
+    <div class="space-y-3 text-sm">
+
+      <div class="flex justify-between">
+        <span class="text-zinc-500">Tamanho</span>
+        <span>24.24 GB</span>
+      </div>
+
+      <div class="flex justify-between">
+        <span class="text-zinc-500">Downloads</span>
+        <span>51</span>
+      </div>
+
+      <div class="flex justify-between">
+        <span class="text-zinc-500">Grupo</span>
+        <span>Anime No Sekai</span>
+      </div>
+
+      <div class="flex justify-between">
+        <span class="text-zinc-500">Uploader</span>
+        <span>MarchinPossum</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="mt-8">
+  <div class=" rounded-3xl">
+
+  <div class="flex items-center justify-between mb-6">
+
+    <div>
+      <h2 class="text-xl font-bold">Arquivos</h2>
+      <p class="text-sm text-zinc-400">
+        6 arquivos disponíveis
+      </p>
+    </div>
+
+    <button class="text-sm px-4 py-2 rounded-xl bg-[#5864be] hover:bg-[#4955a8]">
+      Baixar Tudo
+    </button>
+
+  </div>
+
+  <div class="space-y-3">
+
+    <div class="flex items-center justify-between bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl p-4 transition">
+
+      <div class="flex items-center gap-4">
+
+        <div class="w-12 h-12 rounded-xl bg-[#5864be]/20 flex items-center justify-center">
+
+          📁
+
+        </div>
+
+        <div>
+
+          <h4 class="font-medium">
+            Mobile Suit Gundam 01.mkv
+          </h4>
+
+          <p class="text-sm text-zinc-500">
+            Episódio 01 • 1.8 GB
+          </p>
+
+        </div>
+
+      </div>
+
+      <button class="text-zinc-400 hover:text-white">
+        ⬇
+      </button>
+
+    </div>
+
+    <div class="flex items-center justify-between bg-zinc-800/60 hover:bg-zinc-800 rounded-2xl p-4 transition">
+
+      <div class="flex items-center gap-4">
+
+        <div class="w-12 h-12 rounded-xl bg-[#5864be]/20 flex items-center justify-center">
+          📁
+        </div>
+
+        <div>
+
+          <h4 class="font-medium">
+            Mobile Suit Gundam 02.mkv
+          </h4>
+
+          <p class="text-sm text-zinc-500">
+            Episódio 02 • 1.7 GB
+          </p>
+
+        </div>
+
+      </div>
+
+      <button class="text-zinc-400 hover:text-white">
+        ⬇
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+ <div class="mt-8">
+  <div class="mt-8">
+
+  <div class="flex items-center justify-between mb-4">
+
+    <h4 class="font-semibold text-lg">
+      Lista de Peers
+    </h4>
+
+    <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">
+      11 Online
+    </span>
+
+  </div>
+
+  <div class="space-y-2 max-h-96 overflow-y-auto pr-2">
+
+    <div class="flex items-center justify-between bg-zinc-800/50 rounded-xl p-3">
+
+      <div>
+        <p class="font-medium">VonNatur</p>
+        <p class="text-xs text-zinc-500">Seeder</p>
+      </div>
+
+      <div class="text-right">
+        <p class="text-green-400 text-sm">Online</p>
+        <p class="text-xs text-zinc-500">0.00 B</p>
+      </div>
+
+    </div>
+
+    <div class="flex items-center justify-between bg-zinc-800/50 rounded-xl p-3">
+
+      <div>
+        <p class="font-medium">justhide</p>
+        <p class="text-xs text-zinc-500">Seeder</p>
+      </div>
+
+      <div class="text-right">
+        <p class="text-green-400 text-sm">Online</p>
+        <p class="text-xs text-zinc-500">0.00 B</p>
+      </div>
+
+    </div>
+
+    <div class="flex items-center justify-between bg-zinc-800/50 rounded-xl p-3">
+
+      <div>
+        <p class="font-medium">opatoquemquem</p>
+        <p class="text-xs text-zinc-500">Seeder</p>
+      </div>
+
+      <div class="text-right">
+        <p class="text-green-400 text-sm">Online</p>
+        <p class="text-xs text-zinc-500">0.00 B</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+  </div>  
+  <div class="space-y-4 hidden">
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Seeds</span>
+      <span class="font-semibold">14</span>
+    </div>
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Leechers</span>
+      <span class="font-semibold">0</span>
+    </div>
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Downloads</span>
+      <span class="font-semibold">51</span>
+    </div>
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Categoria</span>
+      <span class="font-semibold">Anime</span>
+    </div>
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Tamanho</span>
+      <span class="font-semibold">24.24 GB</span>
+    </div>
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Uploader</span>
+      <span class="font-semibold text-[#5864be]">
+        MarchinPossum
+      </span>
+    </div>
+
+    <div class="flex justify-between items-center border-b border-white/10 pb-3">
+      <span class="text-gray-400">Grupo</span>
+      <span class="font-semibold">
+        Anime No Sekai
+      </span>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <span class="text-gray-400">Adicionado</span>
+      <span class="font-semibold">
+        28/05/2026
+      </span>
+    </div>
+
+  </div>
+
+  <button
+    class="w-full mt-8 bg-[#5864be] hover:bg-[#4955a8] transition rounded-2xl py-4 font-semibold text-white">
+
+    Baixar Torrent
+
+  </button>
+
+</div>
+
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+
+function toggleTheme(){
+
+  document.body.classList.toggle('light');
+
+  const button = document.querySelector('.theme-toggle');
+
+  if(document.body.classList.contains('light')){
+    button.innerHTML = '☀️';
+  }else{
+    button.innerHTML = '🌙';
+  }
+
+}
+
+</script>
+<script>
+document.getElementById('userBtn').onclick = () => {
+
+  const menu = document.getElementById('userMenu');
+
+  menu.style.display =
+    menu.style.display === 'block'
+      ? 'none'
+      : 'block';
+
+};
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+</body>
+</html>
